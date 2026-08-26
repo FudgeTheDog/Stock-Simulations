@@ -1,0 +1,3 @@
+quarto preview Stock_Simulation.ipynb --to html
+quarto render Stock_Simulation.ipynb --to html
+quarto render Stock_Simulation.ipynb --to pdf
