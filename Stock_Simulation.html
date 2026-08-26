@@ -29,7 +29,7 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="Stock_Simulation_files/libs/clipboard/clipboard.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="Stock_Simulation_files/libs/clipboard/clipboard.min.js"></script>
 <script src="Stock_Simulation_files/libs/quarto-html/quarto.js" type="module"></script>
 <script src="Stock_Simulation_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="Stock_Simulation_files/libs/quarto-html/popper.min.js"></script>
@@ -40,7 +40,39 @@ ul.task-list li input[type="checkbox"] {
 <script src="Stock_Simulation_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="Stock_Simulation_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="Stock_Simulation_files/libs/bootstrap/bootstrap-917079515d91bccb85b543faf8aa8bb6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -72,50 +104,58 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>Geometric Brownian Simulation</li>
 <li>Heston Model</li>
+<li>Merton Jump-Diffusion Model</li>
 </ul>
-<div id="b44505cd" class="cell" data-execution_count="17">
+<section id="geometric-brownian-motion-gbm" class="level3">
+<h3 class="anchored" data-anchor-id="geometric-brownian-motion-gbm">Geometric Brownian Motion (GBM)</h3>
+<p>The main formula for the Geometric Brownian Motion (GBM) is: <span class="math display">\[ dS_t = \mu S_t dt + \sigma S_t dW_t\]</span> Where: <span class="math inline">\(S_t\)</span> = Stock Price at time t <span class="math inline">\(\mu\)</span> = expected annual return (drift) <span class="math inline">\(\sigma\)</span> = annual volatility <span class="math inline">\(dt\)</span> = small change in time <span class="math inline">\(dW_t\)</span>. = Brownian motion/random market shock</p>
+<p>For our Monte Carlo Simulation our Equation becomes <span class="math display">\[ S_{t+\Delta} = S_t exp[(\mu-\frac{1}{2}\sigma^2) \Delta t + \sigma \sqrt{ \Delta t }Z]\]</span></p>
+<p>Where <span class="math display">\[ Z \sim N(0,1) \]</span></p>
+<div id="b44505cd" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-stdout">
-<pre><code>Fetching historical data for MU...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>[*********************100%***********************]  1 of 1 completed</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
+<pre><code>Fetching historical data for MU...
+
 --- Model Calibration Parameters ---
 Latest Stock Price (IAP) : $932.97
-Calculated Annual Drift  : 67.6230%
-Calculated Volatility    : 56.2320%</code></pre>
+Calculated Annual Drift  : 53.9698%
+Calculated Volatility    : 51.4363%</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Stock_Simulation_files/figure-html/cell-3-output-4.png" class="img-fluid figure-img"></p>
+<p><img src="Stock_Simulation_files/figure-html/cell-3-output-2.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<section id="heston-model" class="level2">
-<h2 class="anchored" data-anchor-id="heston-model">Heston Model</h2>
-<div id="f01c7f24" class="cell">
+<ol type="1">
+<li>Limiation of the GBM model is historical calibration. Stocks such as MU have very large volatility over a very short period of time. This leads to very large calculated annual drift and volatility for the simulation, leading to very large swings in the simulation and long right tails. The median does seem reasonible compared to the Heston however. A way to deal with this is putting a cap but this is less defensible as it forces the drift into a range to make it more reasonable then the estimates give.</li>
+</ol>
+</section>
+<section id="heston-model" class="level3">
+<h3 class="anchored" data-anchor-id="heston-model">Heston Model</h3>
+<p>The Heston model consists of two stochastic differential equations with a large amount of parameters compared to the GBM - Stock-price equation: <span class="math display">\[ dS_t = \mu S_tdt + \sqrt{V_tS_tdW^S_t} \]</span> - Variance equation <span class="math display">\[ dV_t = \kappa(\theta-V_t)dt + \sigma \sqrt{V_tS_tdW^S_t} \]</span> With two Brownian motions related by <span class="math display">\[dW_t^S dW_t^V = pdt \]</span></p>
+<p>Where: <span class="math inline">\(S_t\)</span> = Stock price; <span class="math inline">\(V_t\)</span> = instantaneous variance; <span class="math inline">\(\mu\)</span> = expected return/drift; <span class="math inline">\(\kappa\)</span> = speed of mean reversion in variance; <span class="math inline">\(\theta\)</span> - long-run average variance; <span class="math inline">\(\sigma\)</span> = volatility of variance, or vol-of-vol; <span class="math inline">\(p\)</span> = correlation between stock-price and variance shocks; <span class="math inline">\(dW^S_t\)</span> = Stock-price Brownian shock; and $dW^V_t $ = Variance Brownian shock</p>
+<p>For the simulation, the stock-price equation becomes: <span class="math display">\[S_{t+\Delta t} = S_t~exp[(\mu-\frac{1}{2}V_t)\Delta t + \sqrt{V_t \Delta t} Z^S_t] \]</span> and the variance equation becomes: <span class="math display">\[ V_{t+\Delta t} = V_t + \kappa(\theta-V_t)\Delta t + \sigma \sqrt{V_t\Delta t}Z^V_t\]</span> With <span class="math display">\[ Z^V_t = pZ^S_t + \sqrt{1-p^2}Z^2_t \]</span> Where <span class="math inline">\(Z^s_t\)</span> and <span class="math inline">\(Z^2_t\)</span> are independent standard normal random variables</p>
+<div id="f01c7f24" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-stderr">
 <pre><code>[*********************100%***********************]  1 of 1 completed</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Fetching historical data for MU...
 Latest Stock Price (IAP) : $932.97
-Calculated r value  : 67.6230%
-Calculated V0 Value : 31.6204%
-Calculated theta Value : 31.6204%</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/Users/connorpiercy/Stock Simulation/.venv/lib/python3.14/site-packages/matplotlib/animation.py:916: UserWarning: Animation was deleted without rendering anything. This is most likely not intended. To prevent deletion, assign the Animation to a variable, e.g. `anim`, that exists until you output the Animation using `plt.show()` or `anim.save()`.
-  warnings.warn(</code></pre>
+Calculated mu value  : 53.9698%
+Calculated V0 Value : 94.4163%
+Calculated theta Value : 26.5451%
+Calculated kappa Value : 3.008
+Calculated rho Value : -0.03404
+Calculated sigma Value : 1.065
+Feller condition         : Satisfied</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Stock_Simulation_files/figure-html/cell-5-output-4.png" class="img-fluid figure-img"></p>
+<p><img src="Stock_Simulation_files/figure-html/cell-5-output-3.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
