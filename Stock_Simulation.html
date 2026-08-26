@@ -137,7 +137,7 @@ Calculated Volatility    : 51.4363%</code></pre>
 <p>The Heston model consists of two stochastic differential equations with a large amount of parameters compared to the GBM - Stock-price equation: <span class="math display">\[ dS_t = \mu S_tdt + \sqrt{V_tS_tdW^S_t} \]</span> - Variance equation <span class="math display">\[ dV_t = \kappa(\theta-V_t)dt + \sigma \sqrt{V_tS_tdW^S_t} \]</span> With two Brownian motions related by <span class="math display">\[dW_t^S dW_t^V = pdt \]</span></p>
 <p>Where: <span class="math inline">\(S_t\)</span> = Stock price; <span class="math inline">\(V_t\)</span> = instantaneous variance; <span class="math inline">\(\mu\)</span> = expected return/drift; <span class="math inline">\(\kappa\)</span> = speed of mean reversion in variance; <span class="math inline">\(\theta\)</span> - long-run average variance; <span class="math inline">\(\sigma\)</span> = volatility of variance, or vol-of-vol; <span class="math inline">\(p\)</span> = correlation between stock-price and variance shocks; <span class="math inline">\(dW^S_t\)</span> = Stock-price Brownian shock; and $dW^V_t $ = Variance Brownian shock</p>
 <p>For the simulation, the stock-price equation becomes: <span class="math display">\[S_{t+\Delta t} = S_t~exp[(\mu-\frac{1}{2}V_t)\Delta t + \sqrt{V_t \Delta t} Z^S_t] \]</span> and the variance equation becomes: <span class="math display">\[ V_{t+\Delta t} = V_t + \kappa(\theta-V_t)\Delta t + \sigma \sqrt{V_t\Delta t}Z^V_t\]</span> With <span class="math display">\[ Z^V_t = pZ^S_t + \sqrt{1-p^2}Z^2_t \]</span> Where <span class="math inline">\(Z^s_t\)</span> and <span class="math inline">\(Z^2_t\)</span> are independent standard normal random variables</p>
-<div id="f01c7f24" class="cell" data-execution_count="11">
+<div id="f01c7f24" class="cell">
 <div class="cell-output cell-output-stderr">
 <pre><code>[*********************100%***********************]  1 of 1 completed</code></pre>
 </div>
@@ -157,6 +157,571 @@ Feller condition         : Satisfied</code></pre>
 <figure class="figure">
 <p><img src="Stock_Simulation_files/figure-html/cell-5-output-3.png" class="img-fluid figure-img"></p>
 </figure>
+</div>
+</div>
+</div>
+</section>
+<section id="comparison-of-models" class="level3">
+<h3 class="anchored" data-anchor-id="comparison-of-models">Comparison of models</h3>
+<div id="f856503c" class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Running models for AAPL...
+Added AAPL.Rows stored: 1
+Running models for MSFT...
+Added MSFT.Rows stored: 2
+Running models for NVDA...
+Added NVDA.Rows stored: 3
+Running models for AMZN...
+Added AMZN.Rows stored: 4
+Running models for GOOGL...
+Added GOOGL.Rows stored: 5
+Running models for META...
+Added META.Rows stored: 6
+Running models for JPM...
+Added JPM.Rows stored: 7
+Running models for GS...
+Added GS.Rows stored: 8
+Running models for BAC...
+Added BAC.Rows stored: 9
+Running models for V...
+Added V.Rows stored: 10
+Running models for XOM...
+Added XOM.Rows stored: 11
+Running models for CVX...
+Added CVX.Rows stored: 12
+Running models for KO...
+Added KO.Rows stored: 13
+Running models for PEP...
+Added PEP.Rows stored: 14
+Running models for WMT...
+Added WMT.Rows stored: 15
+Running models for COST...
+Added COST.Rows stored: 16
+Running models for DIS...
+Added DIS.Rows stored: 17
+Running models for NFLX...
+Added NFLX.Rows stored: 18
+Running models for GE...
+Added GE.Rows stored: 19
+Running models for HWM...
+Added HWM.Rows stored: 20</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Stock</th>
+<th data-quarto-table-cell-role="th">Start_Price</th>
+<th data-quarto-table-cell-role="th">Mu</th>
+<th data-quarto-table-cell-role="th">GBM_Sigma</th>
+<th data-quarto-table-cell-role="th">Heston_V0</th>
+<th data-quarto-table-cell-role="th">Heston_Theta</th>
+<th data-quarto-table-cell-role="th">Heston_Kappa</th>
+<th data-quarto-table-cell-role="th">Heston_Sigma</th>
+<th data-quarto-table-cell-role="th">Heston_Rho</th>
+<th data-quarto-table-cell-role="th">GBM_Mean</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">Heston_Mean</th>
+<th data-quarto-table-cell-role="th">Heston_Median</th>
+<th data-quarto-table-cell-role="th">Heston_Std</th>
+<th data-quarto-table-cell-role="th">Heston_5%</th>
+<th data-quarto-table-cell-role="th">Heston_25%</th>
+<th data-quarto-table-cell-role="th">Heston_75%</th>
+<th data-quarto-table-cell-role="th">Heston_95%</th>
+<th data-quarto-table-cell-role="th">Heston_Prob_Loss</th>
+<th data-quarto-table-cell-role="th">Heston_Skewness</th>
+<th data-quarto-table-cell-role="th">Heston_Kurtosis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>AAPL</td>
+<td>309.899994</td>
+<td>0.193417</td>
+<td>0.279793</td>
+<td>0.102871</td>
+<td>0.081606</td>
+<td>4.556953</td>
+<td>0.666789</td>
+<td>0.024565</td>
+<td>375.424131</td>
+<td>...</td>
+<td>376.041890</td>
+<td>361.226536</td>
+<td>112.983690</td>
+<td>221.458361</td>
+<td>299.224522</td>
+<td>436.272737</td>
+<td>580.022168</td>
+<td>0.2918</td>
+<td>1.033007</td>
+<td>2.403507</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>MSFT</td>
+<td>491.709991</td>
+<td>0.147513</td>
+<td>0.280220</td>
+<td>0.306489</td>
+<td>0.090949</td>
+<td>4.938243</td>
+<td>0.768085</td>
+<td>0.052534</td>
+<td>573.232335</td>
+<td>...</td>
+<td>570.723639</td>
+<td>530.224122</td>
+<td>219.731504</td>
+<td>294.490544</td>
+<td>421.617556</td>
+<td>676.403745</td>
+<td>966.794692</td>
+<td>0.4091</td>
+<td>1.599927</td>
+<td>7.017972</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>NVDA</td>
+<td>213.050003</td>
+<td>0.589009</td>
+<td>0.514397</td>
+<td>0.119899</td>
+<td>0.269624</td>
+<td>7.353462</td>
+<td>1.311453</td>
+<td>0.148950</td>
+<td>385.259143</td>
+<td>...</td>
+<td>383.692404</td>
+<td>336.384715</td>
+<td>208.817325</td>
+<td>150.771493</td>
+<td>245.448771</td>
+<td>468.892397</td>
+<td>768.043227</td>
+<td>0.1676</td>
+<td>2.125214</td>
+<td>8.837683</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>AMZN</td>
+<td>261.059998</td>
+<td>0.157214</td>
+<td>0.363078</td>
+<td>0.338244</td>
+<td>0.143455</td>
+<td>6.110759</td>
+<td>0.966859</td>
+<td>0.026270</td>
+<td>306.744241</td>
+<td>...</td>
+<td>306.837025</td>
+<td>280.994363</td>
+<td>138.900322</td>
+<td>138.419178</td>
+<td>212.935892</td>
+<td>370.930644</td>
+<td>558.851069</td>
+<td>0.4290</td>
+<td>1.761883</td>
+<td>7.056160</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>GOOGL</td>
+<td>346.959991</td>
+<td>0.233668</td>
+<td>0.320699</td>
+<td>0.140498</td>
+<td>0.107136</td>
+<td>9.084893</td>
+<td>0.804292</td>
+<td>-0.010239</td>
+<td>437.757246</td>
+<td>...</td>
+<td>437.531060</td>
+<td>415.661186</td>
+<td>149.886051</td>
+<td>237.634144</td>
+<td>331.649265</td>
+<td>517.041857</td>
+<td>714.546852</td>
+<td>0.2947</td>
+<td>1.132212</td>
+<td>2.839742</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>META</td>
+<td>570.049988</td>
+<td>0.194464</td>
+<td>0.453211</td>
+<td>0.222293</td>
+<td>0.211449</td>
+<td>9.950025</td>
+<td>2.266874</td>
+<td>-0.036107</td>
+<td>694.097563</td>
+<td>...</td>
+<td>690.948311</td>
+<td>626.047107</td>
+<td>343.012082</td>
+<td>283.456344</td>
+<td>463.252049</td>
+<td>839.604232</td>
+<td>1316.633049</td>
+<td>0.4144</td>
+<td>1.996982</td>
+<td>9.252706</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>JPM</td>
+<td>356.690002</td>
+<td>0.213986</td>
+<td>0.244046</td>
+<td>0.036402</td>
+<td>0.059912</td>
+<td>6.623196</td>
+<td>0.636642</td>
+<td>-0.059651</td>
+<td>442.343908</td>
+<td>...</td>
+<td>442.706040</td>
+<td>432.324301</td>
+<td>105.556650</td>
+<td>290.840466</td>
+<td>370.180582</td>
+<td>502.845793</td>
+<td>629.870317</td>
+<td>0.2071</td>
+<td>0.735332</td>
+<td>1.384717</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">7</th>
+<td>GS</td>
+<td>1058.880005</td>
+<td>0.254836</td>
+<td>0.285762</td>
+<td>0.116262</td>
+<td>0.084257</td>
+<td>6.534609</td>
+<td>0.715029</td>
+<td>0.084744</td>
+<td>1363.788462</td>
+<td>...</td>
+<td>1364.480003</td>
+<td>1305.144524</td>
+<td>418.998952</td>
+<td>799.933884</td>
+<td>1070.250615</td>
+<td>1588.318756</td>
+<td>2116.984341</td>
+<td>0.2367</td>
+<td>1.088298</td>
+<td>2.361444</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">8</th>
+<td>BAC</td>
+<td>62.430000</td>
+<td>0.139642</td>
+<td>0.266424</td>
+<td>0.030000</td>
+<td>0.069495</td>
+<td>6.380192</td>
+<td>0.638728</td>
+<td>-0.038774</td>
+<td>71.931369</td>
+<td>...</td>
+<td>71.939821</td>
+<td>69.829437</td>
+<td>18.444396</td>
+<td>45.796600</td>
+<td>59.080768</td>
+<td>82.685958</td>
+<td>104.962528</td>
+<td>0.3277</td>
+<td>0.795870</td>
+<td>1.461332</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">9</th>
+<td>V</td>
+<td>384.140015</td>
+<td>0.136593</td>
+<td>0.229215</td>
+<td>0.033678</td>
+<td>0.053630</td>
+<td>6.074911</td>
+<td>0.621915</td>
+<td>0.065652</td>
+<td>440.812899</td>
+<td>...</td>
+<td>440.975907</td>
+<td>429.981762</td>
+<td>100.632287</td>
+<td>299.636935</td>
+<td>373.339788</td>
+<td>495.749194</td>
+<td>622.546471</td>
+<td>0.2980</td>
+<td>0.920636</td>
+<td>2.348075</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">10</th>
+<td>XOM</td>
+<td>160.639999</td>
+<td>0.287467</td>
+<td>0.266791</td>
+<td>0.063497</td>
+<td>0.070826</td>
+<td>5.375150</td>
+<td>0.507322</td>
+<td>-0.175126</td>
+<td>213.874837</td>
+<td>...</td>
+<td>213.982348</td>
+<td>207.549012</td>
+<td>56.629356</td>
+<td>133.605582</td>
+<td>174.526714</td>
+<td>246.552361</td>
+<td>316.505323</td>
+<td>0.1646</td>
+<td>0.703812</td>
+<td>0.963478</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">11</th>
+<td>CVX</td>
+<td>199.889999</td>
+<td>0.217178</td>
+<td>0.252586</td>
+<td>0.069294</td>
+<td>0.064221</td>
+<td>5.851140</td>
+<td>0.563975</td>
+<td>-0.189702</td>
+<td>248.946901</td>
+<td>...</td>
+<td>248.324155</td>
+<td>243.657210</td>
+<td>62.805392</td>
+<td>155.292741</td>
+<td>204.724829</td>
+<td>286.010017</td>
+<td>358.666952</td>
+<td>0.2254</td>
+<td>0.571258</td>
+<td>0.850057</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">12</th>
+<td>KO</td>
+<td>91.639999</td>
+<td>0.144359</td>
+<td>0.166731</td>
+<td>0.043043</td>
+<td>0.028906</td>
+<td>6.183028</td>
+<td>0.372243</td>
+<td>-0.066639</td>
+<td>105.819626</td>
+<td>...</td>
+<td>105.961506</td>
+<td>104.342108</td>
+<td>18.702255</td>
+<td>78.317738</td>
+<td>93.080066</td>
+<td>117.201270</td>
+<td>138.717645</td>
+<td>0.2216</td>
+<td>0.582574</td>
+<td>0.939242</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">13</th>
+<td>PEP</td>
+<td>142.270004</td>
+<td>0.032923</td>
+<td>0.188857</td>
+<td>0.033571</td>
+<td>0.036786</td>
+<td>7.474612</td>
+<td>0.429216</td>
+<td>-0.034437</td>
+<td>147.591153</td>
+<td>...</td>
+<td>147.113253</td>
+<td>144.683635</td>
+<td>28.270632</td>
+<td>104.953396</td>
+<td>127.298775</td>
+<td>164.501880</td>
+<td>197.014952</td>
+<td>0.4651</td>
+<td>0.552137</td>
+<td>0.739662</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">14</th>
+<td>WMT</td>
+<td>105.379997</td>
+<td>0.191376</td>
+<td>0.224812</td>
+<td>0.149779</td>
+<td>0.053103</td>
+<td>7.926448</td>
+<td>0.909373</td>
+<td>-0.253250</td>
+<td>127.579799</td>
+<td>...</td>
+<td>127.515745</td>
+<td>125.166616</td>
+<td>32.454663</td>
+<td>79.917103</td>
+<td>105.248887</td>
+<td>146.795307</td>
+<td>183.554759</td>
+<td>0.2519</td>
+<td>0.616117</td>
+<td>1.313795</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">15</th>
+<td>COST</td>
+<td>960.010010</td>
+<td>0.190140</td>
+<td>0.230808</td>
+<td>0.036819</td>
+<td>0.053653</td>
+<td>6.601831</td>
+<td>0.632895</td>
+<td>-0.199938</td>
+<td>1164.270841</td>
+<td>...</td>
+<td>1160.275811</td>
+<td>1139.020012</td>
+<td>265.767822</td>
+<td>760.230478</td>
+<td>981.093175</td>
+<td>1315.498626</td>
+<td>1628.267848</td>
+<td>0.2238</td>
+<td>0.597566</td>
+<td>0.980713</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">16</th>
+<td>DIS</td>
+<td>111.250000</td>
+<td>-0.042670</td>
+<td>0.296669</td>
+<td>0.077251</td>
+<td>0.088477</td>
+<td>7.744263</td>
+<td>0.885439</td>
+<td>-0.160588</td>
+<td>105.849978</td>
+<td>...</td>
+<td>106.162702</td>
+<td>102.988232</td>
+<td>31.290808</td>
+<td>61.707193</td>
+<td>83.898987</td>
+<td>123.867355</td>
+<td>162.693095</td>
+<td>0.6083</td>
+<td>0.763233</td>
+<td>1.248066</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">17</th>
+<td>NFLX</td>
+<td>82.230003</td>
+<td>0.182661</td>
+<td>0.451260</td>
+<td>0.103003</td>
+<td>0.204356</td>
+<td>10.335656</td>
+<td>3.229201</td>
+<td>-0.398348</td>
+<td>97.716733</td>
+<td>...</td>
+<td>98.799185</td>
+<td>93.969645</td>
+<td>44.599313</td>
+<td>36.149041</td>
+<td>67.984217</td>
+<td>123.008044</td>
+<td>176.942460</td>
+<td>0.3873</td>
+<td>1.055842</td>
+<td>3.083795</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">18</th>
+<td>GE</td>
+<td>349.540009</td>
+<td>0.393488</td>
+<td>0.311478</td>
+<td>0.113878</td>
+<td>0.096711</td>
+<td>7.505992</td>
+<td>0.773221</td>
+<td>-0.182511</td>
+<td>518.231715</td>
+<td>...</td>
+<td>516.691007</td>
+<td>498.036358</td>
+<td>164.789221</td>
+<td>285.869499</td>
+<td>400.350395</td>
+<td>609.012408</td>
+<td>813.827230</td>
+<td>0.1395</td>
+<td>0.899546</td>
+<td>1.805701</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">19</th>
+<td>HWM</td>
+<td>264.040009</td>
+<td>0.476450</td>
+<td>0.317592</td>
+<td>0.097441</td>
+<td>0.102426</td>
+<td>7.631238</td>
+<td>0.956283</td>
+<td>0.249326</td>
+<td>424.137086</td>
+<td>...</td>
+<td>422.459769</td>
+<td>397.416743</td>
+<td>144.097455</td>
+<td>243.165612</td>
+<td>324.866482</td>
+<td>489.520452</td>
+<td>682.393393</td>
+<td>0.0851</td>
+<td>1.557635</td>
+<td>5.173903</td>
+</tr>
+</tbody>
+</table>
+
+<p>20 rows × 29 columns</p>
 </div>
 </div>
 </div>
