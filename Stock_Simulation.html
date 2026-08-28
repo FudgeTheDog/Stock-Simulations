@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -111,14 +146,13 @@ window.Quarto = {
 <p>The main formula for the Geometric Brownian Motion (GBM) is: <span class="math display">\[ dS_t = \mu S_t dt + \sigma S_t dW_t\]</span> Where: <span class="math inline">\(S_t\)</span> = Stock Price at time t <span class="math inline">\(\mu\)</span> = expected annual return (drift) <span class="math inline">\(\sigma\)</span> = annual volatility <span class="math inline">\(dt\)</span> = small change in time <span class="math inline">\(dW_t\)</span>. = Brownian motion/random market shock</p>
 <p>For our Monte Carlo Simulation our Equation becomes <span class="math display">\[ S_{t+\Delta} = S_t exp[(\mu-\frac{1}{2}\sigma^2) \Delta t + \sigma \sqrt{ \Delta t }Z]\]</span></p>
 <p>Where <span class="math display">\[ Z \sim N(0,1) \]</span></p>
-<div id="b44505cd" class="cell" data-execution_count="10">
+<div id="b44505cd" class="cell" data-execution_count="25">
 <div class="cell-output cell-output-stdout">
-<pre><code>Fetching historical data for MU...
-
+<pre><code>
 --- Model Calibration Parameters ---
-Latest Stock Price (IAP) : $932.97
-Calculated Annual Drift  : 53.9698%
-Calculated Volatility    : 51.4363%</code></pre>
+Latest Stock Price (IAP) : $935.39
+Calculated Annual Drift  : 53.7318%
+Calculated Volatility    : 51.4216%</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -137,25 +171,23 @@ Calculated Volatility    : 51.4363%</code></pre>
 <p>The Heston model consists of two stochastic differential equations with a large amount of parameters compared to the GBM - Stock-price equation: <span class="math display">\[ dS_t = \mu S_tdt + \sqrt{V_tS_tdW^S_t} \]</span> - Variance equation <span class="math display">\[ dV_t = \kappa(\theta-V_t)dt + \sigma \sqrt{V_tS_tdW^S_t} \]</span> With two Brownian motions related by <span class="math display">\[dW_t^S dW_t^V = pdt \]</span></p>
 <p>Where: <span class="math inline">\(S_t\)</span> = Stock price; <span class="math inline">\(V_t\)</span> = instantaneous variance; <span class="math inline">\(\mu\)</span> = expected return/drift; <span class="math inline">\(\kappa\)</span> = speed of mean reversion in variance; <span class="math inline">\(\theta\)</span> - long-run average variance; <span class="math inline">\(\sigma\)</span> = volatility of variance, or vol-of-vol; <span class="math inline">\(p\)</span> = correlation between stock-price and variance shocks; <span class="math inline">\(dW^S_t\)</span> = Stock-price Brownian shock; and $dW^V_t $ = Variance Brownian shock</p>
 <p>For the simulation, the stock-price equation becomes: <span class="math display">\[S_{t+\Delta t} = S_t~exp[(\mu-\frac{1}{2}V_t)\Delta t + \sqrt{V_t \Delta t} Z^S_t] \]</span> and the variance equation becomes: <span class="math display">\[ V_{t+\Delta t} = V_t + \kappa(\theta-V_t)\Delta t + \sigma \sqrt{V_t\Delta t}Z^V_t\]</span> With <span class="math display">\[ Z^V_t = pZ^S_t + \sqrt{1-p^2}Z^2_t \]</span> Where <span class="math inline">\(Z^s_t\)</span> and <span class="math inline">\(Z^2_t\)</span> are independent standard normal random variables</p>
-<div id="f01c7f24" class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>[*********************100%***********************]  1 of 1 completed</code></pre>
-</div>
+<div id="f01c7f24" class="cell" data-execution_count="26">
 <div class="cell-output cell-output-stdout">
-<pre><code>Fetching historical data for MU...
-Latest Stock Price (IAP) : $932.97
-Calculated mu value  : 53.9698%
-Calculated V0 Value : 94.4163%
-Calculated theta Value : 26.5451%
-Calculated kappa Value : 3.008
-Calculated rho Value : -0.03404
-Calculated sigma Value : 1.065
+<pre><code>
+--- Model Calibration Parameters ---
+Latest Stock Price (IAP) : $935.39
+Calculated mu value  : 53.7319%
+Calculated V0 Value : 66.5967%
+Calculated theta Value : 26.5899%
+Calculated kappa Value : 3.238
+Calculated rho Value : -0.03364
+Calculated sigma Value : 1.067
 Feller condition         : Satisfied</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Stock_Simulation_files/figure-html/cell-5-output-3.png" class="img-fluid figure-img"></p>
+<p><img src="Stock_Simulation_files/figure-html/cell-5-output-2.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -163,7 +195,7 @@ Feller condition         : Satisfied</code></pre>
 </section>
 <section id="comparison-of-models" class="level3">
 <h3 class="anchored" data-anchor-id="comparison-of-models">Comparison of models</h3>
-<div id="f856503c" class="cell">
+<div id="f856503c" class="cell" data-execution_count="21">
 <div class="cell-output cell-output-stdout">
 <pre><code>Running models for AAPL...
 Added AAPL.Rows stored: 1
@@ -177,18 +209,18 @@ Running models for GOOGL...
 Added GOOGL.Rows stored: 5
 Running models for META...
 Added META.Rows stored: 6
-Running models for JPM...
-Added JPM.Rows stored: 7
+Running models for DORM...
+Added DORM.Rows stored: 7
 Running models for GS...
 Added GS.Rows stored: 8
-Running models for BAC...
-Added BAC.Rows stored: 9
-Running models for V...
-Added V.Rows stored: 10
-Running models for XOM...
-Added XOM.Rows stored: 11
-Running models for CVX...
-Added CVX.Rows stored: 12
+Running models for BNY...
+Added BNY.Rows stored: 9
+Running models for REGN...
+Added REGN.Rows stored: 10
+Running models for LRCX...
+Added LRCX.Rows stored: 11
+Running models for GEV...
+Added GEV.Rows stored: 12
 Running models for KO...
 Added KO.Rows stored: 13
 Running models for PEP...
@@ -197,10 +229,10 @@ Running models for WMT...
 Added WMT.Rows stored: 15
 Running models for COST...
 Added COST.Rows stored: 16
-Running models for DIS...
-Added DIS.Rows stored: 17
-Running models for NFLX...
-Added NFLX.Rows stored: 18
+Running models for CVX...
+Added CVX.Rows stored: 17
+Running models for CAT...
+Added CAT.Rows stored: 18
 Running models for GE...
 Added GE.Rows stored: 19
 Running models for HWM...
@@ -241,482 +273,482 @@ Added HWM.Rows stored: 20</code></pre>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">0</th>
 <td>AAPL</td>
-<td>309.899994</td>
-<td>0.193417</td>
-<td>0.279793</td>
-<td>0.102871</td>
-<td>0.081606</td>
-<td>4.556953</td>
-<td>0.666789</td>
-<td>0.024565</td>
-<td>375.424131</td>
+<td>314.579987</td>
+<td>0.188887</td>
+<td>0.279512</td>
+<td>0.104208</td>
+<td>0.082057</td>
+<td>4.560267</td>
+<td>0.666268</td>
+<td>0.025688</td>
+<td>379.371833</td>
 <td>...</td>
-<td>376.041890</td>
-<td>361.226536</td>
-<td>112.983690</td>
-<td>221.458361</td>
-<td>299.224522</td>
-<td>436.272737</td>
-<td>580.022168</td>
-<td>0.2918</td>
-<td>1.033007</td>
-<td>2.403507</td>
+<td>379.991776</td>
+<td>364.890109</td>
+<td>114.622344</td>
+<td>223.409268</td>
+<td>302.029776</td>
+<td>441.110640</td>
+<td>587.041239</td>
+<td>0.2989</td>
+<td>1.037841</td>
+<td>2.418462</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">1</th>
 <td>MSFT</td>
-<td>491.709991</td>
-<td>0.147513</td>
-<td>0.280220</td>
-<td>0.306489</td>
-<td>0.090949</td>
-<td>4.938243</td>
-<td>0.768085</td>
-<td>0.052534</td>
-<td>573.232335</td>
+<td>505.059998</td>
+<td>0.149919</td>
+<td>0.280296</td>
+<td>0.302413</td>
+<td>0.090902</td>
+<td>4.849981</td>
+<td>0.766889</td>
+<td>0.058235</td>
+<td>590.214818</td>
 <td>...</td>
-<td>570.723639</td>
-<td>530.224122</td>
-<td>219.731504</td>
-<td>294.490544</td>
-<td>421.617556</td>
-<td>676.403745</td>
-<td>966.794692</td>
-<td>0.4091</td>
-<td>1.599927</td>
-<td>7.017972</td>
+<td>587.628257</td>
+<td>546.066838</td>
+<td>226.404259</td>
+<td>303.452231</td>
+<td>434.296097</td>
+<td>695.888422</td>
+<td>995.488771</td>
+<td>0.4060</td>
+<td>1.622209</td>
+<td>7.290014</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">2</th>
 <td>NVDA</td>
-<td>213.050003</td>
-<td>0.589009</td>
-<td>0.514397</td>
-<td>0.119899</td>
-<td>0.269624</td>
-<td>7.353462</td>
-<td>1.311453</td>
-<td>0.148950</td>
-<td>385.259143</td>
+<td>227.979996</td>
+<td>0.597711</td>
+<td>0.515662</td>
+<td>0.178993</td>
+<td>0.270980</td>
+<td>7.396927</td>
+<td>1.313018</td>
+<td>0.153628</td>
+<td>415.865155</td>
 <td>...</td>
-<td>383.692404</td>
-<td>336.384715</td>
-<td>208.817325</td>
-<td>150.771493</td>
-<td>245.448771</td>
-<td>468.892397</td>
-<td>768.043227</td>
-<td>0.1676</td>
-<td>2.125214</td>
-<td>8.837683</td>
+<td>414.153489</td>
+<td>360.929265</td>
+<td>230.524053</td>
+<td>159.636656</td>
+<td>261.794056</td>
+<td>507.613646</td>
+<td>840.961803</td>
+<td>0.1684</td>
+<td>2.178699</td>
+<td>9.221981</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">3</th>
 <td>AMZN</td>
-<td>261.059998</td>
-<td>0.157214</td>
-<td>0.363078</td>
-<td>0.338244</td>
-<td>0.143455</td>
-<td>6.110759</td>
-<td>0.966859</td>
-<td>0.026270</td>
-<td>306.744241</td>
+<td>256.260010</td>
+<td>0.147151</td>
+<td>0.363004</td>
+<td>0.336763</td>
+<td>0.143873</td>
+<td>6.086097</td>
+<td>0.966562</td>
+<td>0.026964</td>
+<td>298.089411</td>
 <td>...</td>
-<td>306.837025</td>
-<td>280.994363</td>
-<td>138.900322</td>
-<td>138.419178</td>
-<td>212.935892</td>
-<td>370.930644</td>
-<td>558.851069</td>
-<td>0.4290</td>
-<td>1.761883</td>
-<td>7.056160</td>
+<td>298.180607</td>
+<td>272.904042</td>
+<td>135.103159</td>
+<td>134.496389</td>
+<td>206.838994</td>
+<td>360.424976</td>
+<td>543.447960</td>
+<td>0.4383</td>
+<td>1.765786</td>
+<td>7.090398</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">4</th>
 <td>GOOGL</td>
-<td>346.959991</td>
-<td>0.233668</td>
-<td>0.320699</td>
-<td>0.140498</td>
-<td>0.107136</td>
-<td>9.084893</td>
-<td>0.804292</td>
-<td>-0.010239</td>
-<td>437.757246</td>
+<td>340.649994</td>
+<td>0.225541</td>
+<td>0.320680</td>
+<td>0.138510</td>
+<td>0.106996</td>
+<td>9.052996</td>
+<td>0.803872</td>
+<td>-0.007455</td>
+<td>426.317139</td>
 <td>...</td>
-<td>437.531060</td>
-<td>415.661186</td>
-<td>149.886051</td>
-<td>237.634144</td>
-<td>331.649265</td>
-<td>517.041857</td>
-<td>714.546852</td>
-<td>0.2947</td>
-<td>1.132212</td>
-<td>2.839742</td>
+<td>426.093669</td>
+<td>404.782876</td>
+<td>145.768114</td>
+<td>231.698211</td>
+<td>323.180726</td>
+<td>503.344404</td>
+<td>695.578078</td>
+<td>0.3030</td>
+<td>1.133585</td>
+<td>2.849682</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">5</th>
 <td>META</td>
-<td>570.049988</td>
-<td>0.194464</td>
-<td>0.453211</td>
-<td>0.222293</td>
-<td>0.211449</td>
-<td>9.950025</td>
-<td>2.266874</td>
-<td>-0.036107</td>
-<td>694.097563</td>
+<td>571.099976</td>
+<td>0.185969</td>
+<td>0.453047</td>
+<td>0.223103</td>
+<td>0.211753</td>
+<td>9.956106</td>
+<td>2.266770</td>
+<td>-0.036159</td>
+<td>689.492977</td>
 <td>...</td>
-<td>690.948311</td>
-<td>626.047107</td>
-<td>343.012082</td>
-<td>283.456344</td>
-<td>463.252049</td>
-<td>839.604232</td>
-<td>1316.633049</td>
-<td>0.4144</td>
-<td>1.996982</td>
-<td>9.252706</td>
+<td>686.361323</td>
+<td>621.751917</td>
+<td>341.014567</td>
+<td>281.468993</td>
+<td>460.037280</td>
+<td>834.083697</td>
+<td>1308.367659</td>
+<td>0.4222</td>
+<td>1.997675</td>
+<td>9.254308</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">6</th>
-<td>JPM</td>
-<td>356.690002</td>
-<td>0.213986</td>
-<td>0.244046</td>
-<td>0.036402</td>
-<td>0.059912</td>
-<td>6.623196</td>
-<td>0.636642</td>
-<td>-0.059651</td>
-<td>442.343908</td>
+<td>DORM</td>
+<td>128.210007</td>
+<td>0.116247</td>
+<td>0.337791</td>
+<td>0.434164</td>
+<td>0.125206</td>
+<td>7.840180</td>
+<td>1.067673</td>
+<td>-0.053960</td>
+<td>144.286827</td>
 <td>...</td>
-<td>442.706040</td>
-<td>432.324301</td>
-<td>105.556650</td>
-<td>290.840466</td>
-<td>370.180582</td>
-<td>502.845793</td>
-<td>629.870317</td>
-<td>0.2071</td>
-<td>0.735332</td>
-<td>1.384717</td>
+<td>144.376478</td>
+<td>133.743456</td>
+<td>60.466824</td>
+<td>67.859695</td>
+<td>102.248964</td>
+<td>173.538772</td>
+<td>257.041441</td>
+<td>0.4581</td>
+<td>1.398614</td>
+<td>4.383639</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">7</th>
 <td>GS</td>
-<td>1058.880005</td>
-<td>0.254836</td>
-<td>0.285762</td>
-<td>0.116262</td>
-<td>0.084257</td>
-<td>6.534609</td>
-<td>0.715029</td>
-<td>0.084744</td>
-<td>1363.788462</td>
+<td>1040.869995</td>
+<td>0.250789</td>
+<td>0.285699</td>
+<td>0.081126</td>
+<td>0.083188</td>
+<td>6.593723</td>
+<td>0.716565</td>
+<td>0.084699</td>
+<td>1335.178050</td>
 <td>...</td>
-<td>1364.480003</td>
-<td>1305.144524</td>
-<td>418.998952</td>
-<td>799.933884</td>
-<td>1070.250615</td>
-<td>1588.318756</td>
-<td>2116.984341</td>
-<td>0.2367</td>
-<td>1.088298</td>
-<td>2.361444</td>
+<td>1335.871436</td>
+<td>1281.692104</td>
+<td>394.992821</td>
+<td>800.931823</td>
+<td>1060.089193</td>
+<td>1548.150580</td>
+<td>2049.877659</td>
+<td>0.2283</td>
+<td>1.059410</td>
+<td>2.291333</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">8</th>
-<td>BAC</td>
-<td>62.430000</td>
-<td>0.139642</td>
-<td>0.266424</td>
-<td>0.030000</td>
-<td>0.069495</td>
-<td>6.380192</td>
-<td>0.638728</td>
-<td>-0.038774</td>
-<td>71.931369</td>
+<td>BNY</td>
+<td>162.240005</td>
+<td>0.274274</td>
+<td>0.245290</td>
+<td>0.034350</td>
+<td>0.059368</td>
+<td>5.180670</td>
+<td>0.549881</td>
+<td>-0.060408</td>
+<td>213.846441</td>
 <td>...</td>
-<td>71.939821</td>
-<td>69.829437</td>
-<td>18.444396</td>
-<td>45.796600</td>
-<td>59.080768</td>
-<td>82.685958</td>
-<td>104.962528</td>
-<td>0.3277</td>
-<td>0.795870</td>
-<td>1.461332</td>
+<td>213.856732</td>
+<td>208.606023</td>
+<td>50.654022</td>
+<td>140.554615</td>
+<td>178.663442</td>
+<td>243.781476</td>
+<td>303.387753</td>
+<td>0.1367</td>
+<td>0.714231</td>
+<td>1.260548</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">9</th>
-<td>V</td>
-<td>384.140015</td>
-<td>0.136593</td>
-<td>0.229215</td>
-<td>0.033678</td>
-<td>0.053630</td>
-<td>6.074911</td>
-<td>0.621915</td>
-<td>0.065652</td>
-<td>440.812899</td>
+<td>REGN</td>
+<td>807.710022</td>
+<td>0.086020</td>
+<td>0.311935</td>
+<td>0.095847</td>
+<td>0.099255</td>
+<td>9.688543</td>
+<td>1.091042</td>
+<td>-0.104548</td>
+<td>881.487150</td>
 <td>...</td>
-<td>440.975907</td>
-<td>429.981762</td>
-<td>100.632287</td>
-<td>299.636935</td>
-<td>373.339788</td>
-<td>495.749194</td>
-<td>622.546471</td>
-<td>0.2980</td>
-<td>0.920636</td>
-<td>2.348075</td>
+<td>881.881562</td>
+<td>845.432054</td>
+<td>281.034745</td>
+<td>494.910818</td>
+<td>688.773764</td>
+<td>1033.524077</td>
+<td>1400.730008</td>
+<td>0.4423</td>
+<td>1.003471</td>
+<td>2.328971</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">10</th>
-<td>XOM</td>
-<td>160.639999</td>
-<td>0.287467</td>
-<td>0.266791</td>
-<td>0.063497</td>
-<td>0.070826</td>
-<td>5.375150</td>
-<td>0.507322</td>
-<td>-0.175126</td>
-<td>213.874837</td>
+<td>LRCX</td>
+<td>318.579987</td>
+<td>0.464272</td>
+<td>0.491310</td>
+<td>0.563761</td>
+<td>0.268443</td>
+<td>4.068878</td>
+<td>0.967522</td>
+<td>-0.049737</td>
+<td>505.884622</td>
 <td>...</td>
-<td>213.982348</td>
-<td>207.549012</td>
-<td>56.629356</td>
-<td>133.605582</td>
-<td>174.526714</td>
-<td>246.552361</td>
-<td>316.505323</td>
-<td>0.1646</td>
-<td>0.703812</td>
-<td>0.963478</td>
+<td>505.515044</td>
+<td>431.380846</td>
+<td>318.750051</td>
+<td>161.818687</td>
+<td>294.990535</td>
+<td>625.941540</td>
+<td>1107.624776</td>
+<td>0.2926</td>
+<td>2.100607</td>
+<td>7.727774</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">11</th>
-<td>CVX</td>
-<td>199.889999</td>
-<td>0.217178</td>
-<td>0.252586</td>
-<td>0.069294</td>
-<td>0.064221</td>
-<td>5.851140</td>
-<td>0.563975</td>
-<td>-0.189702</td>
-<td>248.946901</td>
+<td>GEV</td>
+<td>953.830017</td>
+<td>0.969640</td>
+<td>0.535003</td>
+<td>0.216851</td>
+<td>0.285994</td>
+<td>9.557870</td>
+<td>1.784211</td>
+<td>-0.197985</td>
+<td>2529.157248</td>
 <td>...</td>
-<td>248.324155</td>
-<td>243.657210</td>
-<td>62.805392</td>
-<td>155.292741</td>
-<td>204.724829</td>
-<td>286.010017</td>
-<td>358.666952</td>
-<td>0.2254</td>
-<td>0.571258</td>
-<td>0.850057</td>
+<td>2511.489292</td>
+<td>2260.494617</td>
+<td>1350.999458</td>
+<td>872.573953</td>
+<td>1566.137912</td>
+<td>3167.522016</td>
+<td>5018.983616</td>
+<td>0.0680</td>
+<td>1.583569</td>
+<td>5.525312</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">12</th>
 <td>KO</td>
-<td>91.639999</td>
-<td>0.144359</td>
-<td>0.166731</td>
-<td>0.043043</td>
-<td>0.028906</td>
-<td>6.183028</td>
-<td>0.372243</td>
-<td>-0.066639</td>
-<td>105.819626</td>
+<td>89.059998</td>
+<td>0.136349</td>
+<td>0.166954</td>
+<td>0.021855</td>
+<td>0.028138</td>
+<td>6.338053</td>
+<td>0.375071</td>
+<td>-0.060249</td>
+<td>102.019831</td>
 <td>...</td>
-<td>105.961506</td>
-<td>104.342108</td>
-<td>18.702255</td>
-<td>78.317738</td>
-<td>93.080066</td>
-<td>117.201270</td>
-<td>138.717645</td>
-<td>0.2216</td>
-<td>0.582574</td>
-<td>0.939242</td>
+<td>102.175680</td>
+<td>100.754722</td>
+<td>16.813622</td>
+<td>77.284455</td>
+<td>90.623217</td>
+<td>112.193148</td>
+<td>131.336303</td>
+<td>0.2176</td>
+<td>0.555264</td>
+<td>0.907295</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">13</th>
 <td>PEP</td>
-<td>142.270004</td>
-<td>0.032923</td>
-<td>0.188857</td>
-<td>0.033571</td>
-<td>0.036786</td>
-<td>7.474612</td>
-<td>0.429216</td>
-<td>-0.034437</td>
-<td>147.591153</td>
+<td>139.720001</td>
+<td>0.027538</td>
+<td>0.188995</td>
+<td>0.031004</td>
+<td>0.036701</td>
+<td>7.476688</td>
+<td>0.429525</td>
+<td>-0.034852</td>
+<td>144.167730</td>
 <td>...</td>
-<td>147.113253</td>
-<td>144.683635</td>
-<td>28.270632</td>
-<td>104.953396</td>
-<td>127.298775</td>
-<td>164.501880</td>
-<td>197.014952</td>
-<td>0.4651</td>
-<td>0.552137</td>
-<td>0.739662</td>
+<td>143.697553</td>
+<td>141.366177</td>
+<td>27.451395</td>
+<td>102.743659</td>
+<td>124.481389</td>
+<td>160.596584</td>
+<td>191.982080</td>
+<td>0.4746</td>
+<td>0.548272</td>
+<td>0.732721</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">14</th>
 <td>WMT</td>
-<td>105.379997</td>
-<td>0.191376</td>
-<td>0.224812</td>
-<td>0.149779</td>
-<td>0.053103</td>
-<td>7.926448</td>
-<td>0.909373</td>
-<td>-0.253250</td>
-<td>127.579799</td>
+<td>102.629997</td>
+<td>0.185613</td>
+<td>0.224952</td>
+<td>0.146722</td>
+<td>0.053258</td>
+<td>7.910366</td>
+<td>0.909297</td>
+<td>-0.253724</td>
+<td>123.536326</td>
 <td>...</td>
-<td>127.515745</td>
-<td>125.166616</td>
-<td>32.454663</td>
-<td>79.917103</td>
-<td>105.248887</td>
-<td>146.795307</td>
-<td>183.554759</td>
-<td>0.2519</td>
-<td>0.616117</td>
-<td>1.313795</td>
+<td>123.474667</td>
+<td>121.229203</td>
+<td>31.368528</td>
+<td>77.441685</td>
+<td>101.937861</td>
+<td>142.131560</td>
+<td>177.599415</td>
+<td>0.2595</td>
+<td>0.613722</td>
+<td>1.309485</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">15</th>
 <td>COST</td>
-<td>960.010010</td>
-<td>0.190140</td>
-<td>0.230808</td>
-<td>0.036819</td>
-<td>0.053653</td>
-<td>6.601831</td>
-<td>0.632895</td>
-<td>-0.199938</td>
-<td>1164.270841</td>
+<td>934.659973</td>
+<td>0.181859</td>
+<td>0.230994</td>
+<td>0.038720</td>
+<td>0.053391</td>
+<td>6.584943</td>
+<td>0.632448</td>
+<td>-0.198010</td>
+<td>1124.182187</td>
 <td>...</td>
-<td>1160.275811</td>
-<td>1139.020012</td>
-<td>265.767822</td>
-<td>760.230478</td>
-<td>981.093175</td>
-<td>1315.498626</td>
-<td>1628.267848</td>
-<td>0.2238</td>
-<td>0.597566</td>
-<td>0.980713</td>
+<td>1120.350633</td>
+<td>1099.540570</td>
+<td>256.818168</td>
+<td>733.752438</td>
+<td>947.335941</td>
+<td>1270.326321</td>
+<td>1573.029465</td>
+<td>0.2332</td>
+<td>0.599782</td>
+<td>0.985822</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">16</th>
-<td>DIS</td>
-<td>111.250000</td>
-<td>-0.042670</td>
-<td>0.296669</td>
-<td>0.077251</td>
-<td>0.088477</td>
-<td>7.744263</td>
-<td>0.885439</td>
-<td>-0.160588</td>
-<td>105.849978</td>
+<td>CVX</td>
+<td>199.770004</td>
+<td>0.214632</td>
+<td>0.252509</td>
+<td>0.061577</td>
+<td>0.064034</td>
+<td>5.854766</td>
+<td>0.564045</td>
+<td>-0.189601</td>
+<td>246.139875</td>
 <td>...</td>
-<td>106.162702</td>
-<td>102.988232</td>
-<td>31.290808</td>
-<td>61.707193</td>
-<td>83.898987</td>
-<td>123.867355</td>
-<td>162.693095</td>
-<td>0.6083</td>
-<td>0.763233</td>
-<td>1.248066</td>
+<td>246.770889</td>
+<td>241.690430</td>
+<td>61.977342</td>
+<td>156.017210</td>
+<td>202.698475</td>
+<td>284.156552</td>
+<td>356.517827</td>
+<td>0.2323</td>
+<td>0.600733</td>
+<td>0.813485</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">17</th>
-<td>NFLX</td>
-<td>82.230003</td>
-<td>0.182661</td>
-<td>0.451260</td>
-<td>0.103003</td>
-<td>0.204356</td>
-<td>10.335656</td>
-<td>3.229201</td>
-<td>-0.398348</td>
-<td>97.716733</td>
+<td>CAT</td>
+<td>817.000000</td>
+<td>0.339234</td>
+<td>0.316536</td>
+<td>0.127362</td>
+<td>0.101956</td>
+<td>7.600901</td>
+<td>0.767432</td>
+<td>0.113703</td>
+<td>1138.834667</td>
 <td>...</td>
-<td>98.799185</td>
-<td>93.969645</td>
-<td>44.599313</td>
-<td>36.149041</td>
-<td>67.984217</td>
-<td>123.008044</td>
-<td>176.942460</td>
-<td>0.3873</td>
-<td>1.055842</td>
-<td>3.083795</td>
+<td>1147.898155</td>
+<td>1088.288200</td>
+<td>388.825689</td>
+<td>646.845132</td>
+<td>878.883203</td>
+<td>1345.204987</td>
+<td>1854.148993</td>
+<td>0.1798</td>
+<td>1.381727</td>
+<td>4.869421</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">18</th>
 <td>GE</td>
-<td>349.540009</td>
-<td>0.393488</td>
-<td>0.311478</td>
-<td>0.113878</td>
-<td>0.096711</td>
-<td>7.505992</td>
-<td>0.773221</td>
-<td>-0.182511</td>
-<td>518.231715</td>
+<td>342.730011</td>
+<td>0.386108</td>
+<td>0.311694</td>
+<td>0.113779</td>
+<td>0.096970</td>
+<td>7.501917</td>
+<td>0.773157</td>
+<td>-0.182113</td>
+<td>504.398613</td>
 <td>...</td>
-<td>516.691007</td>
-<td>498.036358</td>
-<td>164.789221</td>
-<td>285.869499</td>
-<td>400.350395</td>
-<td>609.012408</td>
-<td>813.827230</td>
-<td>0.1395</td>
-<td>0.899546</td>
-<td>1.805701</td>
+<td>502.898751</td>
+<td>484.694568</td>
+<td>160.577699</td>
+<td>278.031511</td>
+<td>389.520484</td>
+<td>592.854736</td>
+<td>792.261829</td>
+<td>0.1452</td>
+<td>0.901352</td>
+<td>1.812098</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">19</th>
 <td>HWM</td>
-<td>264.040009</td>
-<td>0.476450</td>
-<td>0.317592</td>
-<td>0.097441</td>
-<td>0.102426</td>
-<td>7.631238</td>
-<td>0.956283</td>
-<td>0.249326</td>
-<td>424.137086</td>
+<td>267.649994</td>
+<td>0.481788</td>
+<td>0.317289</td>
+<td>0.078269</td>
+<td>0.102162</td>
+<td>7.637507</td>
+<td>0.956910</td>
+<td>0.249480</td>
+<td>432.238296</td>
 <td>...</td>
-<td>422.459769</td>
-<td>397.416743</td>
-<td>144.097455</td>
-<td>243.165612</td>
-<td>324.866482</td>
-<td>489.520452</td>
-<td>682.393393</td>
-<td>0.0851</td>
-<td>1.557635</td>
-<td>5.173903</td>
+<td>430.494018</td>
+<td>405.472213</td>
+<td>144.630896</td>
+<td>249.674748</td>
+<td>332.370177</td>
+<td>498.749593</td>
+<td>692.420189</td>
+<td>0.0779</td>
+<td>1.539595</td>
+<td>5.077482</td>
 </tr>
 </tbody>
 </table>
@@ -725,6 +757,1095 @@ Added HWM.Rows stored: 20</code></pre>
 </div>
 </div>
 </div>
+</section>
+<section id="comparing-models" class="level3">
+<h3 class="anchored" data-anchor-id="comparing-models">Comparing Models</h3>
+<p>Too compare the models we will be using two difference tests; A Paired t-test and a Wilcoxon test. For each stock, the difference between the Heston and GBM value was calculated for each distributional statistic. Paired tests were then applied across the 20 stock-level differences to determine whether either model systematically produced higher or lower values for the statistic.</p>
+</section>
+<section id="paired-t-test-of-model-differences" class="level3">
+<h3 class="anchored" data-anchor-id="paired-t-test-of-model-differences">Paired t-test of model differences</h3>
+<p><span class="math display">\[t = \frac{\hat{d}}{\frac{S_d}{\sqrt{n}}},~t \sim t_{n-1}\]</span> Where <span class="math inline">\(\hat{d}\)</span> is the sample difference between paired means, <span class="math inline">\(S_d\)</span> os the sample standard deviation of differences, and <span class="math inline">\(n\)</span> is the number of pairs. <span class="math display">\[Null~Hypothesis: \mu_d=0\]</span> <span class="math display">\[Alternative~Hypothesis: \mu_d\neq 0\]</span></p>
+<div id="74adf4a3" class="cell">
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Stock</th>
+<th data-quarto-table-cell-role="th">GBM_Mean</th>
+<th data-quarto-table-cell-role="th">Heston_Mean</th>
+<th data-quarto-table-cell-role="th">GBM_Median</th>
+<th data-quarto-table-cell-role="th">Heston_Median</th>
+<th data-quarto-table-cell-role="th">GBM_Std</th>
+<th data-quarto-table-cell-role="th">Heston_Std</th>
+<th data-quarto-table-cell-role="th">GBM_5%</th>
+<th data-quarto-table-cell-role="th">Heston_5%</th>
+<th data-quarto-table-cell-role="th">GBM_95%</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">Skewness_Diff</th>
+<th data-quarto-table-cell-role="th">Kurtosis_Diff</th>
+<th data-quarto-table-cell-role="th">GBM_Median_Return</th>
+<th data-quarto-table-cell-role="th">Heston_Median_Return</th>
+<th data-quarto-table-cell-role="th">GBM_Relative_Std</th>
+<th data-quarto-table-cell-role="th">Heston_Relative_Std</th>
+<th data-quarto-table-cell-role="th">GBM_5_Return</th>
+<th data-quarto-table-cell-role="th">Heston_5_Return</th>
+<th data-quarto-table-cell-role="th">GBM_95_Return</th>
+<th data-quarto-table-cell-role="th">Heston_95_Return</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>AAPL</td>
+<td>380.050798</td>
+<td>380.674086</td>
+<td>366.381440</td>
+<td>365.623572</td>
+<td>108.351581</td>
+<td>114.402773</td>
+<td>229.106851</td>
+<td>224.180486</td>
+<td>579.447943</td>
+<td>...</td>
+<td>0.169172</td>
+<td>1.089255</td>
+<td>0.168867</td>
+<td>0.166449</td>
+<td>0.345674</td>
+<td>0.364979</td>
+<td>-0.269080</td>
+<td>-0.284797</td>
+<td>0.848614</td>
+<td>0.873879</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>MSFT</td>
+<td>579.523445</td>
+<td>576.991664</td>
+<td>555.231422</td>
+<td>536.013339</td>
+<td>168.352079</td>
+<td>223.043900</td>
+<td>350.769370</td>
+<td>297.404819</td>
+<td>888.814296</td>
+<td>...</td>
+<td>0.711441</td>
+<td>5.839744</td>
+<td>0.118584</td>
+<td>0.079867</td>
+<td>0.339167</td>
+<td>0.449350</td>
+<td>-0.293331</td>
+<td>-0.400840</td>
+<td>0.790629</td>
+<td>0.971696</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>NVDA</td>
+<td>375.972140</td>
+<td>374.440819</td>
+<td>330.791973</td>
+<td>327.962262</td>
+<td>209.421592</td>
+<td>204.052282</td>
+<td>140.136424</td>
+<td>147.070675</td>
+<td>761.579520</td>
+<td>...</td>
+<td>0.109485</td>
+<td>-0.242769</td>
+<td>0.577754</td>
+<td>0.564258</td>
+<td>0.998863</td>
+<td>0.973253</td>
+<td>-0.331602</td>
+<td>-0.298528</td>
+<td>2.632450</td>
+<td>2.581287</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>AMZN</td>
+<td>305.021462</td>
+<td>305.116099</td>
+<td>285.226447</td>
+<td>279.309741</td>
+<td>114.832850</td>
+<td>138.236465</td>
+<td>156.980977</td>
+<td>137.612312</td>
+<td>515.150879</td>
+<td>...</td>
+<td>0.519203</td>
+<td>3.907966</td>
+<td>0.095845</td>
+<td>0.073113</td>
+<td>0.441190</td>
+<td>0.531107</td>
+<td>-0.396877</td>
+<td>-0.471291</td>
+<td>0.979218</td>
+<td>1.135176</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>GOOGL</td>
+<td>428.697105</td>
+<td>428.473039</td>
+<td>406.066966</td>
+<td>407.049998</td>
+<td>141.377531</td>
+<td>146.587010</td>
+<td>237.368065</td>
+<td>232.997176</td>
+<td>688.626390</td>
+<td>...</td>
+<td>0.129718</td>
+<td>1.057976</td>
+<td>0.187330</td>
+<td>0.190205</td>
+<td>0.413385</td>
+<td>0.428617</td>
+<td>-0.305941</td>
+<td>-0.318722</td>
+<td>1.013527</td>
+<td>1.045305</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>META</td>
+<td>699.828024</td>
+<td>696.650812</td>
+<td>631.014334</td>
+<td>631.171034</td>
+<td>337.377643</td>
+<td>346.029650</td>
+<td>297.885470</td>
+<td>285.837643</td>
+<td>1331.924707</td>
+<td>...</td>
+<td>0.455550</td>
+<td>4.943422</td>
+<td>0.095245</td>
+<td>0.095517</td>
+<td>0.585583</td>
+<td>0.600600</td>
+<td>-0.482963</td>
+<td>-0.503875</td>
+<td>1.311807</td>
+<td>1.304670</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>DORM</td>
+<td>145.544030</td>
+<td>145.634788</td>
+<td>137.272565</td>
+<td>134.938915</td>
+<td>50.861466</td>
+<td>60.862175</td>
+<td>78.896578</td>
+<td>68.563020</td>
+<td>240.485480</td>
+<td>...</td>
+<td>0.337435</td>
+<td>2.503584</td>
+<td>0.060839</td>
+<td>0.042805</td>
+<td>0.393056</td>
+<td>0.470341</td>
+<td>-0.390289</td>
+<td>-0.470147</td>
+<td>0.858466</td>
+<td>1.000520</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">7</th>
+<td>GS</td>
+<td>1330.659685</td>
+<td>1331.334541</td>
+<td>1277.285296</td>
+<td>1273.400228</td>
+<td>382.577363</td>
+<td>409.376631</td>
+<td>803.850181</td>
+<td>779.669238</td>
+<td>2035.930218</td>
+<td>...</td>
+<td>0.254247</td>
+<td>1.225071</td>
+<td>0.227616</td>
+<td>0.223882</td>
+<td>0.367700</td>
+<td>0.393457</td>
+<td>-0.227409</td>
+<td>-0.250649</td>
+<td>0.956760</td>
+<td>0.986664</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">8</th>
+<td>BNY</td>
+<td>214.235900</td>
+<td>214.250413</td>
+<td>208.076781</td>
+<td>208.641925</td>
+<td>52.973100</td>
+<td>51.679865</td>
+<td>139.366962</td>
+<td>139.688637</td>
+<td>309.454527</td>
+<td>...</td>
+<td>-0.073064</td>
+<td>-0.278815</td>
+<td>0.275918</td>
+<td>0.279384</td>
+<td>0.324829</td>
+<td>0.316899</td>
+<td>-0.145407</td>
+<td>-0.143435</td>
+<td>0.897563</td>
+<td>0.876498</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">9</th>
+<td>REGN</td>
+<td>894.500771</td>
+<td>894.898199</td>
+<td>850.124000</td>
+<td>857.795119</td>
+<td>285.519480</td>
+<td>284.438447</td>
+<td>505.602187</td>
+<td>502.777114</td>
+<td>1420.371131</td>
+<td>...</td>
+<td>0.054767</td>
+<td>0.835209</td>
+<td>0.043366</td>
+<td>0.052781</td>
+<td>0.350421</td>
+<td>0.349094</td>
+<td>-0.379469</td>
+<td>-0.382937</td>
+<td>0.743236</td>
+<td>0.742958</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">10</th>
+<td>LRCX</td>
+<td>494.758097</td>
+<td>494.279276</td>
+<td>435.858500</td>
+<td>416.759702</td>
+<td>259.620601</td>
+<td>324.185077</td>
+<td>193.009919</td>
+<td>151.620690</td>
+<td>986.758786</td>
+<td>...</td>
+<td>0.516344</td>
+<td>3.579963</td>
+<td>0.393053</td>
+<td>0.332011</td>
+<td>0.829777</td>
+<td>1.036132</td>
+<td>-0.383118</td>
+<td>-0.515403</td>
+<td>2.153793</td>
+<td>2.543263</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">11</th>
+<td>GEV</td>
+<td>2530.442766</td>
+<td>2512.495153</td>
+<td>2194.854784</td>
+<td>2258.752006</td>
+<td>1466.510680</td>
+<td>1362.854975</td>
+<td>911.201140</td>
+<td>865.686776</td>
+<td>5300.378548</td>
+<td>...</td>
+<td>-0.313821</td>
+<td>-1.309232</td>
+<td>1.302883</td>
+<td>1.369925</td>
+<td>1.538691</td>
+<td>1.429933</td>
+<td>-0.043951</td>
+<td>-0.091705</td>
+<td>4.561257</td>
+<td>4.289992</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">12</th>
+<td>KO</td>
+<td>103.621603</td>
+<td>103.780718</td>
+<td>102.389373</td>
+<td>102.326448</td>
+<td>17.324510</td>
+<td>17.020300</td>
+<td>77.662392</td>
+<td>78.577418</td>
+<td>134.131621</td>
+<td>...</td>
+<td>0.081158</td>
+<td>0.465757</td>
+<td>0.136649</td>
+<td>0.135951</td>
+<td>0.192324</td>
+<td>0.188946</td>
+<td>-0.137851</td>
+<td>-0.127693</td>
+<td>0.489028</td>
+<td>0.480064</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">13</th>
+<td>PEP</td>
+<td>147.432024</td>
+<td>146.947598</td>
+<td>144.923862</td>
+<td>144.597723</td>
+<td>28.363235</td>
+<td>27.868771</td>
+<td>105.564351</td>
+<td>105.280959</td>
+<td>197.838457</td>
+<td>...</td>
+<td>-0.013352</td>
+<td>0.212810</td>
+<td>0.019227</td>
+<td>0.016933</td>
+<td>0.199474</td>
+<td>0.195997</td>
+<td>-0.257582</td>
+<td>-0.259576</td>
+<td>0.391367</td>
+<td>0.378617</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">14</th>
+<td>WMT</td>
+<td>126.213188</td>
+<td>126.150115</td>
+<td>122.898108</td>
+<td>123.855967</td>
+<td>28.448696</td>
+<td>32.037109</td>
+<td>85.399527</td>
+<td>79.157592</td>
+<td>177.497373</td>
+<td>...</td>
+<td>-0.058753</td>
+<td>0.552320</td>
+<td>0.177862</td>
+<td>0.187042</td>
+<td>0.272654</td>
+<td>0.307045</td>
+<td>-0.181526</td>
+<td>-0.241349</td>
+<td>0.701144</td>
+<td>0.739078</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">15</th>
+<td>COST</td>
+<td>1158.075712</td>
+<td>1154.078986</td>
+<td>1123.995899</td>
+<td>1133.240169</td>
+<td>272.649740</td>
+<td>262.244630</td>
+<td>775.393906</td>
+<td>759.005593</td>
+<td>1651.665775</td>
+<td>...</td>
+<td>-0.161680</td>
+<td>0.020178</td>
+<td>0.175580</td>
+<td>0.185249</td>
+<td>0.285163</td>
+<td>0.274280</td>
+<td>-0.189020</td>
+<td>-0.206161</td>
+<td>0.727467</td>
+<td>0.689387</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">16</th>
+<td>CVX</td>
+<td>246.665315</td>
+<td>247.287801</td>
+<td>238.567846</td>
+<td>241.996629</td>
+<td>62.553005</td>
+<td>62.546410</td>
+<td>159.441922</td>
+<td>155.900551</td>
+<td>359.184583</td>
+<td>...</td>
+<td>-0.192181</td>
+<td>-0.312952</td>
+<td>0.191588</td>
+<td>0.208714</td>
+<td>0.312437</td>
+<td>0.312404</td>
+<td>-0.203627</td>
+<td>-0.221315</td>
+<td>0.794039</td>
+<td>0.787184</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">17</th>
+<td>CAT</td>
+<td>1145.594714</td>
+<td>1154.698800</td>
+<td>1090.542872</td>
+<td>1086.696438</td>
+<td>372.087101</td>
+<td>411.818212</td>
+<td>647.253728</td>
+<td>630.671527</td>
+<td>1831.543110</td>
+<td>...</td>
+<td>0.457332</td>
+<td>3.595296</td>
+<td>0.326807</td>
+<td>0.322128</td>
+<td>0.452699</td>
+<td>0.501038</td>
+<td>-0.212520</td>
+<td>-0.232694</td>
+<td>1.228344</td>
+<td>1.314103</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">18</th>
+<td>GE</td>
+<td>524.122151</td>
+<td>522.562390</td>
+<td>498.376662</td>
+<td>503.379729</td>
+<td>166.825585</td>
+<td>167.154464</td>
+<td>302.671627</td>
+<td>288.722716</td>
+<td>833.421100</td>
+<td>...</td>
+<td>-0.104558</td>
+<td>0.182143</td>
+<td>0.406294</td>
+<td>0.420412</td>
+<td>0.470740</td>
+<td>0.471668</td>
+<td>-0.145936</td>
+<td>-0.185297</td>
+<td>1.351706</td>
+<td>1.324420</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">19</th>
+<td>HWM</td>
+<td>432.830035</td>
+<td>431.128755</td>
+<td>410.355750</td>
+<td>405.269778</td>
+<td>140.547757</td>
+<td>147.886118</td>
+<td>247.019371</td>
+<td>247.435600</td>
+<td>695.883788</td>
+<td>...</td>
+<td>0.506926</td>
+<td>3.128656</td>
+<td>0.523560</td>
+<td>0.504677</td>
+<td>0.521823</td>
+<td>0.549069</td>
+<td>-0.082872</td>
+<td>-0.081326</td>
+<td>1.583663</td>
+<td>1.591821</td>
+</tr>
+</tbody>
+</table>
+
+<p>20 rows × 33 columns</p>
+</div>
+</div>
+</div>
+<div id="0943b597" class="cell">
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Metric</th>
+<th data-quarto-table-cell-role="th">GBM_Average</th>
+<th data-quarto-table-cell-role="th">Heston_Average</th>
+<th data-quarto-table-cell-role="th">Average_Difference</th>
+<th data-quarto-table-cell-role="th">T_p_value</th>
+<th data-quarto-table-cell-role="th">Wilcoxon_p_value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Median_Return</td>
+<td>0.275243</td>
+<td>0.272565</td>
+<td>-0.002678</td>
+<td>0.636022</td>
+<td>0.570597</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Relative_Std</td>
+<td>0.481782</td>
+<td>0.507211</td>
+<td>0.025428</td>
+<td>0.084781</td>
+<td>0.063723</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>5_Return</td>
+<td>-0.253019</td>
+<td>-0.284387</td>
+<td>-0.031368</td>
+<td>0.002996</td>
+<td>0.000851</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>95_Return</td>
+<td>1.250704</td>
+<td>1.282829</td>
+<td>0.032125</td>
+<td>0.266262</td>
+<td>0.348810</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Prob_Loss</td>
+<td>0.266255</td>
+<td>0.274640</td>
+<td>0.008385</td>
+<td>0.132319</td>
+<td>0.245487</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>Skewness</td>
+<td>1.058167</td>
+<td>1.227436</td>
+<td>0.169268</td>
+<td>0.016371</td>
+<td>0.029575</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>Kurtosis</td>
+<td>2.430248</td>
+<td>3.980027</td>
+<td>1.549779</td>
+<td>0.002411</td>
+<td>0.002712</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Metric</th>
+<th data-quarto-table-cell-role="th">GBM_Average</th>
+<th data-quarto-table-cell-role="th">Heston_Average</th>
+<th data-quarto-table-cell-role="th">Average_Difference</th>
+<th data-quarto-table-cell-role="th">T_p_value</th>
+<th data-quarto-table-cell-role="th">Wilcoxon_p_value</th>
+<th data-quarto-table-cell-role="th">T_p_Holm</th>
+<th data-quarto-table-cell-role="th">Wilcoxon_p_Holm</th>
+<th data-quarto-table-cell-role="th">T_Holm_Significant</th>
+<th data-quarto-table-cell-role="th">Wilcoxon_Holm_Significant</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Median_Return</td>
+<td>0.275243</td>
+<td>0.272565</td>
+<td>-0.002678</td>
+<td>0.636022</td>
+<td>0.570597</td>
+<td>0.636022</td>
+<td>0.736462</td>
+<td>False</td>
+<td>False</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Relative_Std</td>
+<td>0.481782</td>
+<td>0.507211</td>
+<td>0.025428</td>
+<td>0.084781</td>
+<td>0.063723</td>
+<td>0.339125</td>
+<td>0.254890</td>
+<td>False</td>
+<td>False</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>5_Return</td>
+<td>-0.253019</td>
+<td>-0.284387</td>
+<td>-0.031368</td>
+<td>0.002996</td>
+<td>0.000851</td>
+<td>0.017977</td>
+<td>0.005955</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>95_Return</td>
+<td>1.250704</td>
+<td>1.282829</td>
+<td>0.032125</td>
+<td>0.266262</td>
+<td>0.348810</td>
+<td>0.532523</td>
+<td>0.736462</td>
+<td>False</td>
+<td>False</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Prob_Loss</td>
+<td>0.266255</td>
+<td>0.274640</td>
+<td>0.008385</td>
+<td>0.132319</td>
+<td>0.245487</td>
+<td>0.396958</td>
+<td>0.736462</td>
+<td>False</td>
+<td>False</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>Skewness</td>
+<td>1.058167</td>
+<td>1.227436</td>
+<td>0.169268</td>
+<td>0.016371</td>
+<td>0.029575</td>
+<td>0.081855</td>
+<td>0.147877</td>
+<td>False</td>
+<td>False</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>Kurtosis</td>
+<td>2.430248</td>
+<td>3.980027</td>
+<td>1.549779</td>
+<td>0.002411</td>
+<td>0.002712</td>
+<td>0.016878</td>
+<td>0.016273</td>
+<td>True</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<ul>
+<li><p>Across the 20 equities, GBM and Heston produced statistically similar median returns, upper-tail returns, and probabilities of loss. However, Heston produced significantly lower 5th-percentile returns, greater positive skewness, and substantially greater kurtosis. This indicates that introducing stochastic volatility had relatively little effect on the centre of the simulated terminal-price distributions but materially altered their tail behaviour and distributional shape.</p></li>
+<li><p>However, after applying the Holm correction for multiple comparisons, statistically significant differences remained only for the 5th-percentile return and kurtosis. The Heston model produced a significantly lower 5th-percentile return than GBM, indicating greater downside-tail risk, and significantly higher kurtosis, indicating heavier tails. Differences in median return, relative standard deviation, 95th-percentile return, probability of loss, and skewness were not statistically significant after correction.</p></li>
+<li><p>This result supports theory behind the Heston model. The model doesnt shift the centre of the forecasted distribution as seen in the results, but changes the behaviour of the tail instead.</p></li>
+</ul>
+</section>
+<section id="two-sample-kolmogorov-smirnov-test" class="level3">
+<h3 class="anchored" data-anchor-id="two-sample-kolmogorov-smirnov-test">Two-Sample Kolmogorov-Smirnov Test:</h3>
+<p>This test is to measure the maximum vertical distance between the empirical cumulative distribution of the GBM and Heston Simulations for each stock.</p>
+<p>K-S Statistic is <span class="math display">\[D=\underset{x}{sup}[F_{GBM}(x)-F_{Heston}(x)].\]</span> with Hypothesis: <span class="math display">\[H_0:F_{GBM}(x)=F_{Heston}(x); H_1:F_{GBM}(x) \neq F_{Heston}(x).\]</span></p>
+<p>Due to having 10,000 simulations per model per stock, the K-S p-value may become tiny for relatively small differences. Therefore for interpretation we will emphasize the K-S statistic <span class="math inline">\(D\)</span> as the effect size, not only whether <span class="math inline">\(p &lt; 0.05\)</span>.</p>
+<p>A Holm Correction will be added to the p-values obtained to adjust for the fact we are doing multiple tests simultaneously.</p>
+<div id="90892296" class="cell" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">43</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> []</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> Stock <span class="kw">in</span> stocks:</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    stock_data <span class="op">=</span> yf.download(</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        Stock,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        period<span class="op">=</span><span class="st">"5y"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        progress<span class="op">=</span><span class="va">False</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(stock_data.columns, pd.MultiIndex):</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        close_prices <span class="op">=</span> stock_data[<span class="st">"Close"</span>][Stock]</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        close_prices <span class="op">=</span> stock_data[<span class="st">"Close"</span>]</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    close_prices <span class="op">=</span> close_prices.dropna()</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    IAP_stock <span class="op">=</span> <span class="bu">float</span>(close_prices.iloc[<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    log_returns <span class="op">=</span> np.log(</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        close_prices <span class="op">/</span> close_prices.shift(<span class="dv">1</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    ).dropna()</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># GBM Parameters</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    gbm_sigma <span class="op">=</span> log_returns.std() <span class="op">*</span> np.sqrt(steps)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co">#Heston Parameters</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    rolling_variance <span class="op">=</span> (log_returns.rolling(window<span class="op">=</span><span class="dv">21</span>).var()<span class="op">*</span> steps).dropna()</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    V0 <span class="op">=</span> <span class="bu">float</span>(rolling_variance.iloc[<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="co">#Theta and Kappa Estimates</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    V_t <span class="op">=</span> rolling_variance.iloc[:<span class="op">-</span><span class="dv">1</span>].values</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    V_next <span class="op">=</span> rolling_variance.iloc[<span class="dv">1</span>:].values</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    delta_V <span class="op">=</span> V_next <span class="op">-</span> V_t</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> np.column_stack([np.ones(<span class="bu">len</span>(V_t)), V_t])</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    beta <span class="op">=</span> np.linalg.lstsq(X, V_next, rcond<span class="op">=</span><span class="va">None</span>)[<span class="dv">0</span>]</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    dt <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> steps</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    intercept <span class="op">=</span> beta[<span class="dv">0</span>]</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    slope <span class="op">=</span> beta[<span class="dv">1</span>]</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="dv">0</span> <span class="op">&lt;</span> slope <span class="op">&lt;</span> <span class="dv">1</span>:</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>        kappa <span class="op">=</span> <span class="op">-</span>np.log(slope) <span class="op">/</span> dt</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>        theta <span class="op">=</span> intercept <span class="op">/</span> (<span class="dv">1</span><span class="op">-</span>slope)</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>        theta <span class="op">=</span> <span class="bu">float</span>(rolling_variance.mean())</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>        kappa <span class="op">=</span> <span class="fl">2.0</span></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> np.isfinite(theta) <span class="kw">or</span> theta <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>        theta <span class="op">=</span> <span class="bu">float</span>(rolling_variance.mean())</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> np.isfinite(kappa) <span class="kw">or</span> kappa <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>        kappa <span class="op">=</span> <span class="fl">2.0</span></span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a><span class="co"># Sigma Estimates</span></span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>    delta_V <span class="op">=</span> V_next <span class="op">-</span> V_t</span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>    expected_delta_V <span class="op">=</span> (kappa<span class="op">*</span> (theta <span class="op">-</span> V_t)<span class="op">*</span> dt)</span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>    variance_residuals <span class="op">=</span> (delta_V <span class="op">-</span> expected_delta_V)</span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>    valid <span class="op">=</span> V_t <span class="op">&gt;</span> <span class="fl">1e-10</span></span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>    standardized_variance_shocks <span class="op">=</span> (variance_residuals[valid] </span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>                                    <span class="op">/</span> np.sqrt(V_t[valid] <span class="op">*</span> dt))</span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>    heston_sigma <span class="op">=</span> <span class="bu">float</span>(np.std(standardized_variance_shocks,ddof<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> np.isfinite(heston_sigma) <span class="kw">or</span> heston_sigma <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>        heston_sigma <span class="op">=</span> <span class="fl">0.01</span></span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a><span class="co">#rho Estimate </span></span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>    aligned_returns <span class="op">=</span> (log_returns.loc[rolling_variance.index].iloc[<span class="dv">1</span>:].values)</span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>    aligned_returns <span class="op">=</span> aligned_returns[valid]</span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>    V_for_returns <span class="op">=</span> V_t[valid]</span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>    stock_shocks <span class="op">=</span> (aligned_returns <span class="op">-</span> mu <span class="op">*</span> dt) <span class="op">/</span> np.sqrt(V_for_returns <span class="op">*</span> dt)</span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>    variance_shocks <span class="op">=</span> (variance_residuals[valid]<span class="op">/</span> </span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>                    (heston_sigma <span class="op">*</span> np.sqrt(V_for_returns <span class="op">*</span> dt)))</span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>    rho <span class="op">=</span> <span class="bu">float</span>(np.corrcoef(stock_shocks, variance_shocks)[<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> np.isfinite(rho):</span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a>        rho <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a>    rho <span class="op">=</span> np.clip(rho,<span class="op">-</span><span class="fl">0.999</span>,<span class="fl">0.999</span>)</span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a><span class="co"># GBM Sim</span></span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a>    gbm_paths <span class="op">=</span> GBM(IAP_stock, mu, gbm_sigma, time_horizon, steps, simulations)</span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a>    gbm_final <span class="op">=</span> (</span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a>        gbm_paths[<span class="op">-</span><span class="dv">1</span>, :]</span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a><span class="co">#Heston Sim</span></span>
+<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a>    heston_paths, heston_variances <span class="op">=</span> Heston(IAP_stock, V0, mu, kappa, theta, heston_sigma, rho, time_horizon, steps, simulations)</span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a>    heston_final <span class="op">=</span> (</span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a>    heston_paths[<span class="op">-</span><span class="dv">1</span>, :]</span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a>    gbm_final <span class="op">=</span> gbm_paths[<span class="op">-</span><span class="dv">1</span>, :]</span>
+<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a>    heston_final <span class="op">=</span> heston_paths[<span class="op">-</span><span class="dv">1</span>, :]</span>
+<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a><span class="co">#KS Test</span></span>
+<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a>    gbm_returns <span class="op">=</span> (</span>
+<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a>    gbm_final <span class="op">/</span> IAP_stock <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a>    heston_returns <span class="op">=</span> (</span>
+<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a>    heston_final <span class="op">/</span> IAP_stock <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a>    ks_stat, ks_p <span class="op">=</span> ks_2samp(</span>
+<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a>    gbm_returns,</span>
+<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a>    heston_returns</span>
+<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a>    results.append({</span>
+<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Stock"</span>: Stock,</span>
+<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a>        <span class="st">"KS_Statistic"</span>: ks_stat,</span>
+<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a>        <span class="st">"KS_p_value"</span>: ks_p</span>
+<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> pd.DataFrame(results)</span>
+<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a>KS_test <span class="op">=</span> results_df[[</span>
+<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Stock"</span>,</span>
+<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a>    <span class="st">"KS_Statistic"</span>,</span>
+<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a>    <span class="st">"KS_p_value"</span></span>
+<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a>]].copy()</span>
+<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a>KS_test[<span class="st">"KS_p_Holm"</span>] <span class="op">=</span> multipletests(</span>
+<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a>    KS_test[<span class="st">"KS_p_value"</span>],</span>
+<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.05</span>,</span>
+<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a>    method<span class="op">=</span><span class="st">"holm"</span></span>
+<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a>)[<span class="dv">1</span>]</span>
+<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a>KS_test[<span class="st">"KS_holm_Significant"</span>] <span class="op">=</span> (</span>
+<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a>    KS_test[<span class="st">"KS_p_Holm"</span>] <span class="op">&lt;</span> <span class="fl">0.05</span></span>
+<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a>KS_test <span class="op">=</span> KS_test.sort_values(</span>
+<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a>    <span class="st">"KS_Statistic"</span>,</span>
+<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a>    ascending <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a>display(KS_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Stock</th>
+<th data-quarto-table-cell-role="th">KS_Statistic</th>
+<th data-quarto-table-cell-role="th">KS_p_value</th>
+<th data-quarto-table-cell-role="th">KS_p_Holm</th>
+<th data-quarto-table-cell-role="th">KS_holm_Significant</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">1</th>
+<td>MSFT</td>
+<td>0.0780</td>
+<td>7.128875e-27</td>
+<td>1.425775e-25</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">10</th>
+<td>LRCX</td>
+<td>0.0573</td>
+<td>1.083387e-14</td>
+<td>2.058436e-13</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>DORM</td>
+<td>0.0513</td>
+<td>7.367148e-12</td>
+<td>1.326087e-10</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>AMZN</td>
+<td>0.0499</td>
+<td>3.041607e-11</td>
+<td>5.170731e-10</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">14</th>
+<td>WMT</td>
+<td>0.0377</td>
+<td>1.340577e-06</td>
+<td>2.144923e-05</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">11</th>
+<td>GEV</td>
+<td>0.0318</td>
+<td>8.104938e-05</td>
+<td>1.215741e-03</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">16</th>
+<td>CVX</td>
+<td>0.0272</td>
+<td>1.223799e-03</td>
+<td>1.713319e-02</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">15</th>
+<td>COST</td>
+<td>0.0213</td>
+<td>2.141058e-02</td>
+<td>2.783375e-01</td>
+<td>False</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">12</th>
+<td>KO</td>
+<td>0.0208</td>
+<td>2.642748e-02</td>
+<td>3.171298e-01</td>
+<td>False</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">8</th>
+<td>BNY</td>
+<td>0.0207</td>
+<td>2.754740e-02</td>
+<td>3.171298e-01</td>
+<td>False</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">19</th>
+<td>HWM</td>
+<td>0.0188</td>
+<td>5.834923e-02</td>
+<td>5.834923e-01</td>
+<td>False</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">18</th>
+<td>GE</td>
+<td>0.0181</td>
+<td>7.554538e-02</td>
+<td>6.799085e-01</td>
+<td>False</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>NVDA</td>
+<td>0.0180</td>
+<td>7.832208e-02</td>
+<td>6.799085e-01</td>
+<td>False</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">9</th>
+<td>REGN</td>
+<td>0.0151</td>
+<td>2.043349e-01</td>
+<td>1.000000e+00</td>
+<td>False</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>GOOGL</td>
+<td>0.0150</td>
+<td>2.105578e-01</td>
+<td>1.000000e+00</td>
+<td>False</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>META</td>
+<td>0.0119</td>
+<td>4.784083e-01</td>
+<td>1.000000e+00</td>
+<td>False</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">17</th>
+<td>CAT</td>
+<td>0.0119</td>
+<td>4.784083e-01</td>
+<td>1.000000e+00</td>
+<td>False</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">0</th>
+<td>AAPL</td>
+<td>0.0116</td>
+<td>5.116056e-01</td>
+<td>1.000000e+00</td>
+<td>False</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">7</th>
+<td>GS</td>
+<td>0.0116</td>
+<td>5.116056e-01</td>
+<td>1.000000e+00</td>
+<td>False</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">13</th>
+<td>PEP</td>
+<td>0.0098</td>
+<td>7.229401e-01</td>
+<td>1.000000e+00</td>
+<td>False</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>After applying the Holm correction across the 20 stock-level K-S tests, 7 of the 20 stocks retained statistically significant differences between their GBM and Heston simulated terminal-return distributions. This indicates that, for approximately 35% of the sample, stochastic volatility materially altered the overall return distribution relative to GBM. However, for the remaining 65%, the K-S test did not detect a statistically significant distributional difference after correcting for multiple comparisons.</p>
+<p>Important Note: The p-value obtained is heavily influenced by the 10,000 simulated observations, while the K-S Test Statistic is not. Therefore data is sorted by the K-S Test Statistic and give more weight to it in our interpretation of results, rather then the p-value.</p>
 </section>
 
 </main>
